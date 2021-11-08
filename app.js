@@ -26,10 +26,10 @@ app.post("/", function (req, res) {
   entryArray.push(newEntry);
   res.redirect("/");
 });
-// app.post("/reset", function (req, res) {
-//   entryArray = [];
-//   res.redirect("/");
-// });
+app.post("/reset", function (req, res) {
+  entryArray = [];
+  res.redirect("/");
+});
 
 app.listen(3000, function () {
   console.log("Server started on port 3000");
