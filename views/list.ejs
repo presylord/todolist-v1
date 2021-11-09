@@ -4,16 +4,16 @@
     <title>To-Do List</title>
   </head>
   <body>
-    <h1>Today is:</h1>
     <h2><%= currentDay%></h2>
     <ul>
-      <% for (var x=0; x<=entryArray.length; x++){ %>
-      <li><%= entryArray[x] %></li>
+      <% for (var x=0; x<=items.length; x++){ %>
+
+      <li><%= items[x] %></li>
       <%}%>
     </ul>
     <form action="/" method="post">
       <label for="newItem">Add item:</label>
-      <input type="text" name="newItem" />
+      <input type="text" name="newItem" required />
       <button type="submit">Add</button>
     </form>
     <br />
