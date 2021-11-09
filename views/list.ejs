@@ -2,23 +2,40 @@
 <html>
   <head>
     <title>To-Do List</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="css/styles.css" />
   </head>
   <body>
-    <h2><%= currentDay%></h2>
-    <ul>
-      <% for (var x=0; x<=items.length; x++){ %>
-
-      <li><%= items[x] %></li>
+    <div class="box" id="heading">
+      <h1><%= currentDay %></h1>
+    </div>
+    <div class="box">
+      <% for (var x=0; x<items.length; x++){ %>
+      <div class="item">
+        <input type="checkbox" />
+        <p><%= items[x] %></p>
+      </div>
       <%}%>
-    </ul>
-    <form action="/" method="post">
-      <label for="newItem">Add item:</label>
-      <input type="text" name="newItem" required />
-      <button type="submit">Add</button>
-    </form>
+      <form class="item" action="/" method="post">
+        <input
+          type="text"
+          name="newItem"
+          placeholder="New Item"
+          autocomplete="off"
+          required
+        />
+        <button type="submit" name="button">+</button>
+      </form>
+    </div>
+
     <br />
     <form action="/reset" method="post">
-      <button type="submit">Delete All</button>
+      <button class="delete" type="submit">Delete All</button>
     </form>
   </body>
 </html>
