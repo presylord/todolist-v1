@@ -12,9 +12,18 @@
   </head>
   <body>
     <div class="box" id="heading">
-      <h1><%= currentDay %></h1>
+      <h1><%= listTitle %></h1>
     </div>
+
+      <div class="button-links">
+      <button class="links-button"><a role="button" href="/">Daily Tasks</a>
+</button>
+      <button class="links-button"><a role="button" href="/work">Work Tasks</a>
+</button>
+</div>    
     <div class="box">
+      
+      
       <% for (var x=0; x<items.length; x++){ %>
       <div class="item">
         <input type="checkbox" />
@@ -29,7 +38,7 @@
           autocomplete="off"
           required
         />
-        <button type="submit" name="button">+</button>
+        <button type="submit" name="list" value="<%= listTitle %>">+</button>
       </form>
     </div>
 
