@@ -88,11 +88,12 @@ button {
 
 .links-button {
   min-height: 50px;
-  width: 200px;
+  width: 199px;
   border-radius: 15px 15px 0 0;
   font-size: 18px;
   margin: 0;
   padding: 0;
+  box-shadow: 5px 5px 15px -5px rgba(0, 0, 0, 0.3);
 }
 
 .delete {
