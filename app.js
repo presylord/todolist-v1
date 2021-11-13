@@ -1,15 +1,29 @@
 const express = require("express");
 const app = express();
-var items = ["go to gas station", "pay bills", "buy grocery"];
-var newItem = "";
+const mongoose = require("mongoose");
 
-var workItems = ["create weekly report", "submit daily updates"];
-var newWorkItem = "";
+// var items = ["go to gas station", "pay bills", "buy grocery"];
+// var newItem = "";
+
+// var workItems = ["create weekly report", "submit daily updates"];
+// var newWorkItem = "";
 
 app.set("view engine", "ejs");
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static("public"));
+
+mongoose.connect("mongodb://localhost:27017/todolistDB");
+
+const itemSchema = {
+  item: {
+    type: String,
+    required: true,
+  },
+};
+
+const Item = mongoose.model("Items", itemSchema);
+const workItem = mongoose.model("WorkItems", itemSchema);
 
 app.get("/", function (req, res) {
   var today = new Date();
@@ -19,31 +33,52 @@ app.get("/", function (req, res) {
     day: "numeric",
   };
   var completeDate = today.toLocaleDateString("en-US", options);
-  res.render("list", {
-    listTitle: completeDate,
-    items: items,
+
+  Item.find({}, { item: 1, _id: 0 }, function (err, results) {
+    //   if (results.length === 0) {
+    //     Item.insertMany(defaultItems, function (err) {
+    //       if (err) {
+    //         console.log(err);
+    //       } else {
+    //         console.log("Added succesfully.");
+    //       }
+    //     });
+    //     res.redirect("/");
+    //   } else {
+    //   }
+    // });
+    res.render("list", {
+      listTitle: completeDate,
+      items: results,
+    });
   });
 });
 
 app.get("/work", function (req, res) {
-  res.render("list", { listTitle: "Work List", items: workItems });
+  workItem.find({}, { item: 1, _id: 0 }, function (err, workItems) {
+    res.render("list", { listTitle: "Work List", items: workItems });
+  });
 });
 
 app.post("/", function (req, res) {
   if (req.body.list === "Work List") {
-    var newWorkItem = req.body.newItem;
-    workItems.push(newWorkItem);
+    var newWorkItem = new workItem({ item: req.body.newItem });
+    newWorkItem.save();
     res.redirect("/work");
   } else {
-    var newItem = req.body.newItem;
-    items.push(newItem);
+    var newItem = new Item({ item: req.body.newItem });
+    newItem.save();
     res.redirect("/");
   }
 });
 
 app.post("/reset", function (req, res) {
-  items = [];
-  workItems = [];
+  Item.deleteMany({}, function (err) {
+    console.log(err);
+  });
+  workItem.deleteMany({}, function (err) {
+    console.log(err);
+  });
   res.redirect("/");
 });
 

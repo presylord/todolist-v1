@@ -15,21 +15,23 @@
       <h1><%= listTitle %></h1>
     </div>
 
-      <div class="button-links">
-      <button class="links-button"><a role="button" href="/">Daily Tasks</a>
-</button>
-      <button class="links-button"><a role="button" href="/work">Work Tasks</a>
-</button>
-</div>    
+    <div class="button-links">
+      <button class="links-button">
+        <a role="button" href="/">Daily Tasks</a>
+      </button>
+      <button class="links-button">
+        <a role="button" href="/work">Work Tasks</a>
+      </button>
+    </div>
+
     <div class="box">
-      
-      
-      <% for (var x=0; x<items.length; x++){ %>
+      <% items.forEach(function(items){ %>
       <div class="item">
         <input type="checkbox" />
-        <p><%= items[x] %></p>
+        <p><%=items.item %></p>
       </div>
-      <%}%>
+      <% }) %>
+
       <form class="item" action="/" method="post">
         <input
           type="text"
