@@ -71,6 +71,7 @@ app.post("/", function (req, res) {
   } else {
     var newItem = new Item({ item: req.body.newItem });
     newItem.save();
+
     res.redirect("/");
   }
 });
