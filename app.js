@@ -77,6 +77,7 @@ app.post("/", function (req, res) {
 });
 app.post("/delete", function (req, res) {
   const checkedItem = req.body.checkBox;
+  console.log(checkedItem);
   Item.findOneAndRemove({ name: "checkedItem" }, function (err) {
     if (!err) {
       console.log("Successfully Deleted.");
@@ -85,15 +86,15 @@ app.post("/delete", function (req, res) {
   });
 });
 
-// app.post("/reset", function (req, res) {
-//   Item.deleteMany(function (err) {
-//     console.log(err);
-//   });
-//   workItem.deleteMany(function (err) {
-//     console.log(err);
-//   });
-//   res.redirect("/");
-// });
+app.post("/reset", function (req, res) {
+  Item.deleteMany(function (err) {
+    console.log(err);
+  });
+  workItem.deleteMany(function (err) {
+    console.log(err);
+  });
+  res.redirect("/");
+});
 
 app.listen(3000, function () {
   console.log("Server started on port 3000");
