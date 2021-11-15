@@ -51,8 +51,8 @@ app.get("/", function (req, res) {
       listTitle: completeDate,
       items: results,
     });
-    if (err) {
-      console.log(err);
+    if (!err) {
+      console.log("app.get OK!");
     }
   });
 });
@@ -75,16 +75,25 @@ app.post("/", function (req, res) {
     res.redirect("/");
   }
 });
-
-app.post("/reset", function (req, res) {
-  Item.deleteMany(function (err) {
-    console.log(err);
+app.post("/delete", function (req, res) {
+  const checkedItem = req.body.checkBox;
+  Item.findOneAndRemove({ name: "checkedItem" }, function (err) {
+    if (!err) {
+      console.log("Successfully Deleted.");
+      res.redirect("/");
+    }
   });
-  workItem.deleteMany(function (err) {
-    console.log(err);
-  });
-  res.redirect("/");
 });
+
+// app.post("/reset", function (req, res) {
+//   Item.deleteMany(function (err) {
+//     console.log(err);
+//   });
+//   workItem.deleteMany(function (err) {
+//     console.log(err);
+//   });
+//   res.redirect("/");
+// });
 
 app.listen(3000, function () {
   console.log("Server started on port 3000");

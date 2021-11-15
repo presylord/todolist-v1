@@ -26,10 +26,18 @@
 
     <div class="box">
       <% items.forEach(function(items){ %>
-      <div class="item">
-        <input type="checkbox" name="checkBox" />
-        <p><%=items.item %></p>
-      </div>
+      <form action="/delete" method="post">
+        <div class="item">
+          <input
+            type="checkbox"
+            name="checkBox"
+            value="<%= items._id%>"
+            onChange="this.form.submit()"
+          />
+          <p><%=items.item %></p>
+        </div>
+      </form>
+
       <% }) %>
 
       <form class="item" action="/" method="post">
