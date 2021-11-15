@@ -22,8 +22,8 @@ const itemSchema = {
   },
 };
 
-const Item = mongoose.model("Items", itemSchema);
-const workItem = mongoose.model("WorkItems", itemSchema);
+const Item = mongoose.model("items", itemSchema);
+const workItem = mongoose.model("workitems", itemSchema);
 
 app.get("/", function (req, res) {
   var today = new Date();
@@ -51,6 +51,9 @@ app.get("/", function (req, res) {
       listTitle: completeDate,
       items: results,
     });
+    if (err) {
+      console.log(err);
+    }
   });
 });
 
@@ -73,10 +76,10 @@ app.post("/", function (req, res) {
 });
 
 app.post("/reset", function (req, res) {
-  Item.deleteMany({}, function (err) {
+  Item.deleteMany(function (err) {
     console.log(err);
   });
-  workItem.deleteMany({}, function (err) {
+  workItem.deleteMany(function (err) {
     console.log(err);
   });
   res.redirect("/");
