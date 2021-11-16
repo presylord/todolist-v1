@@ -24,7 +24,7 @@ const itemSchema = {
 
 const listSchema = {
   name: String,
-  items: [itemSchema],
+  item: [itemSchema],
 };
 
 const Item = mongoose.model("items", itemSchema);
@@ -60,7 +60,7 @@ app.get("/:newList", function (req, res) {
       res.redirect("/" + newListName);
     } else {
       console.log("List found!");
-      res.render("list", { listTitle: newListName, items: [] });
+      res.render("list", { listTitle: foundList.name, items: foundList.item });
     }
   });
 });
