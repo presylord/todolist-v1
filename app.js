@@ -34,7 +34,7 @@ app.get("/", function (req, res) {
   };
   var completeDate = today.toLocaleDateString("en-US", options);
 
-  Item.find({}, { item: 1, _id: 0 }, function (err, results) {
+  Item.find({}, { item: 1, _id: 1 }, function (err, results) {
     //   if (results.length === 0) {
     //     Item.insertMany(defaultItems, function (err) {
     //       if (err) {
@@ -58,7 +58,7 @@ app.get("/", function (req, res) {
 });
 
 app.get("/work", function (req, res) {
-  workItem.find({}, { item: 1, _id: 0 }, function (err, workItems) {
+  workItem.find({}, function (err, workItems) {
     res.render("list", { listTitle: "Work List", items: workItems });
   });
 });
@@ -78,11 +78,9 @@ app.post("/", function (req, res) {
 app.post("/delete", function (req, res) {
   const checkedItem = req.body.checkBox;
   console.log(checkedItem);
-  Item.findOneAndRemove({ name: "checkedItem" }, function (err) {
-    if (!err) {
-      console.log("Successfully Deleted.");
-      res.redirect("/");
-    }
+  Item.deleteOne({ _id: checkedItem }, function (err) {
+    console.log(err);
+    res.redirect("/");
   });
 });
 
