@@ -15,15 +15,6 @@
       <h1><%= listTitle %></h1>
     </div>
 
-    <div class="button-links">
-      <button class="links-button">
-        <a role="button" href="/">Daily Tasks</a>
-      </button>
-      <button class="links-button">
-        <a role="button" href="/work">Work Tasks</a>
-      </button>
-    </div>
-
     <div class="box">
       <% items.forEach(function(items){ %>
       <form action="/delete" method="post">
