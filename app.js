@@ -83,12 +83,25 @@ app.post("/", function (req, res) {
 
 app.post("/delete", function (req, res) {
   const checkedItem = req.body.checkBox;
+  const listName = req.body.listID;
   console.log(checkedItem);
-
-  Item.deleteOne({ _id: checkedItem }, function (err) {
-    console.log(err);
-    res.redirect("/");
-  });
+  if (listName == completeDate) {
+    Item.deleteOne({ _id: checkedItem }, function (err) {
+      console.log(err);
+      res.redirect("/");
+    });
+  } else {
+    List.findOne({ name: listName }, function (err, foundList) {
+      if (!foundList) {
+        console.log(err);
+      } else {
+        Item.deleteOne({ _id: checkedItem }, function (err) {
+          console.log(err);
+          res.redirect("/" + listName);
+        });
+      }
+    });
+  }
 });
 
 // deleting all items on the list
