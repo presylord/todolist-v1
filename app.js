@@ -1,12 +1,7 @@
 const express = require("express");
 const app = express();
 const mongoose = require("mongoose");
-
-// var items = ["go to gas station", "pay bills", "buy grocery"];
-// var newItem = "";
-
-// var workItems = ["create weekly report", "submit daily updates"];
-// var newWorkItem = "";
+const _ = require("lodash");
 
 app.set("view engine", "ejs");
 
@@ -50,7 +45,7 @@ app.get("/", function (req, res) {
 });
 
 app.get("/:newList", function (req, res) {
-  const newListName = req.params.newList;
+  const newListName = _.capitalize(req.params.newList);
   List.findOne({ name: newListName }, function (err, foundList) {
     if (!foundList) {
       console.log("Not found!, Creating...");
@@ -83,7 +78,7 @@ app.post("/", function (req, res) {
 
 app.post("/delete", function (req, res) {
   const checkedItem = req.body.checkBox;
-  const listName = req.body.listID;
+  const listName = req.body.listName;
   console.log(checkedItem);
   if (listName == completeDate) {
     Item.deleteOne({ _id: checkedItem }, function (err) {
@@ -91,16 +86,18 @@ app.post("/delete", function (req, res) {
       res.redirect("/");
     });
   } else {
-    List.findOne({ name: listName }, function (err, foundList) {
-      if (!foundList) {
-        console.log(err);
-      } else {
-        Item.deleteOne({ _id: checkedItem }, function (err) {
-          console.log(err);
+    //pulling an item within an array
+    List.findOneAndUpdate(
+      { name: listName },
+      { $pull: { item: { _id: checkedItem } } },
+      function (err, foundList) {
+        if (!err) {
           res.redirect("/" + listName);
-        });
+        } else {
+          console.log(err);
+        }
       }
-    });
+    );
   }
 });
 
