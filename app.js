@@ -30,22 +30,21 @@ const listSchema = {
 const Item = mongoose.model("items", itemSchema);
 const List = mongoose.model("lists", listSchema);
 
-app.get("/", function (req, res) {
-  var today = new Date();
-  var options = {
-    weekday: "long",
-    month: "long",
-    day: "numeric",
-  };
-  var completeDate = today.toLocaleDateString("en-US", options);
+var today = new Date();
+var options = {
+  weekday: "long",
+  month: "long",
+  day: "numeric",
+};
+var completeDate = today.toLocaleDateString("en-US", options);
 
+app.get("/", function (req, res) {
   Item.find({}, function (err, results) {
     res.render("list", {
       listTitle: completeDate,
       items: results,
     });
     if (!err) {
-      console.log("app.get OK!");
     }
   });
 });
@@ -55,67 +54,53 @@ app.get("/:newList", function (req, res) {
   List.findOne({ name: newListName }, function (err, foundList) {
     if (!foundList) {
       console.log("Not found!, Creating...");
-      const newList = new List({ name: newListName, items: [] });
-      newList.save();
+      const list = new List({ name: newListName, item: [] });
+      list.save();
       res.redirect("/" + newListName);
     } else {
-      console.log("List found!");
       res.render("list", { listTitle: foundList.name, items: foundList.item });
     }
   });
 });
 
 app.post("/", function (req, res) {
-  if (req.body.list === "Work List") {
-    var newWorkItem = new workItem({ item: req.body.newItem });
-    newWorkItem.save();
-    res.redirect("/work");
-  } else {
-    var newItem = new Item({ item: req.body.newItem });
-    newItem.save();
+  var newItem = new Item({ item: req.body.newItem });
+  var newList = req.body.list;
 
+  if (newList == completeDate) {
+    newItem.save();
     res.redirect("/");
+  } else {
+    List.findOne({ name: newList }, function (err, foundList) {
+      foundList.item.push(newItem);
+      foundList.save();
+      res.redirect("/" + newList);
+    });
   }
 });
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
+
+// deleting individual item
 
 app.post("/delete", function (req, res) {
   const checkedItem = req.body.checkBox;
   console.log(checkedItem);
+
   Item.deleteOne({ _id: checkedItem }, function (err) {
     console.log(err);
     res.redirect("/");
   });
 });
 
+// deleting all items on the list
+
 app.post("/reset", function (req, res) {
   Item.deleteMany(function (err) {
     console.log(err);
   });
-  workItem.deleteMany(function (err) {
+  List.deleteMany(function (err) {
     console.log(err);
   });
+
   res.redirect("/");
 });
 
