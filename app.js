@@ -8,7 +8,9 @@ app.set("view engine", "ejs");
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static("public"));
 
-mongoose.connect("mongodb://localhost:27017/todolistDB");
+mongoose.connect(
+  "mongodb+srv://admin-presylord:admin12345@cluster0.sr1vb.mongodb.net/todolistDB"
+);
 
 const itemSchema = {
   item: {
